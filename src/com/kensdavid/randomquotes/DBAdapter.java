@@ -87,14 +87,6 @@ public class DBAdapter {
 		DBHelper.close();
 	}
 	
-	/*//insert a quote into the database
-	public long insertQuote(String Quote)
-	{
-		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_QUOTE, Quote);
-		return db.insert(DATABASE_TABLE, null, initialValues);
-	}*/
-	
 	//Update the defaultTip Percentage
 	public long updateTip(Double tipPct)
 	{
@@ -103,7 +95,7 @@ public class DBAdapter {
 		return db.update(DATABASE_TABLE, values, "_id=1", null);
 	}
 	
-	//Update the defaultTip Percentage
+	//Update the defaultTax Percentage
 	public long updateTax(Double taxPct)
 	{
 		ContentValues values = new ContentValues();
@@ -117,9 +109,9 @@ public class DBAdapter {
 		
 		if(cursor.moveToFirst())
 		{
-			return cursor.getInt(0);
+			return cursor.getDouble(0);
 		}
-		return cursor.getInt(0);
+		return cursor.getDouble(0);
 	}
 	
 	public double getDefaultTax()
@@ -128,46 +120,10 @@ public class DBAdapter {
 		
 		if(cursor.moveToFirst())
 		{
-			return cursor.getInt(0);
+			return cursor.getDouble(0);
 		}
-		return cursor.getInt(0);
+		return cursor.getDouble(0);
 	}
-	
-	/*
-	public String showAllEntries()
-	{
-		Cursor cursor;
-		cursor = db.rawQuery("SELECT Quote FROM tblTipCalc", null);
-		
-		cursor.moveToFirst();
-		int Counter = 1;
-		String returnString = Counter + " - " + cursor.getString(0) + "\n";
-		Counter++;
-		
-		while(cursor.moveToNext())
-		{			
-			returnString = returnString + Counter + " - " + cursor.getString(0) + "\n";
-			Counter++;
-		}
-		
-		return returnString.substring(0, returnString.length()-1);
-	}
-	*/
-	
-	/*
-	public String getRandomEntry()
-	{
-		//id = getAllEntries();
-		Random random = new Random();
-		int rand = random.nextInt(getAllEntries()) + 1;
-		Cursor cursor = db.rawQuery("SELECT Quote FROM tblTipCalc WHERE _id = " + rand, null);
-		if(cursor.moveToFirst())
-		{
-			return cursor.getString(0);
-		}
-		return cursor.getString(0);
-	}
-	*/
 	
 	public void clearData()
 	{

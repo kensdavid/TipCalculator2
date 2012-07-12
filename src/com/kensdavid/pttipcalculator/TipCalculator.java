@@ -2,6 +2,8 @@ package com.kensdavid.pttipcalculator;
 
  
 
+import java.text.NumberFormat;
+
 import com.kensdavid.randomquotes.DBAdapter;
 
 import android.app.Activity;
@@ -133,12 +135,35 @@ public class TipCalculator extends Activity {
          splitBySeekBar = (SeekBar)findViewById(R.id.splitBySeekBar);
          splitBySeekBar.setOnSeekBarChangeListener(splitBySeekBarListener);
          showPerPerson(false);
+         billEditText.setText(Double.toString(currentPreTaxBill));
+         tipPctEditText.setText(Double.toString(currentTipPct));
+         taxPctEditText.setText(Double.toString(currentTaxPct));
          
+         splitBySeekBar.setProgress(currentSplitBy);
+         setTextBoxes();
     }
     
-
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	setTextBoxes();
+    }
     
-    //Save all values
+    private void setTextBoxes() {
+    	//tipAmtEditText.setText(String.format("%.2f", tipAmt));
+    	//taxAmtEditText.setText(String.format("%.3f", taxAmt));
+    	tipAmtEditText.setText(String.format("%.2f", tipAmt));
+    	taxAmtEditText.setText(String.format("%.2f", taxAmt));
+    	totalAmtEditText.setText(String.format("%.2f", totalAmt));
+    	indBillEditText.setText(String.format("%.2f", indPreTaxAmt));
+    	indTipEditText.setText(String.format("%.2f", indTipAmt));
+    	indTaxEditText.setText(String.format("%.2f", indTaxAmt));
+    	indTotalEditText.setText(String.format("%.2f", indTotalAmt));
+	}
+
+
+
+	//Save all values
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
@@ -178,7 +203,7 @@ public class TipCalculator extends Activity {
 			db.open();
 			//tipPctEditText.setText(Double.toString(db.getDefaultTip()), null);
 			currentTipPct = db.getDefaultTip();
-			tipPctEditText.setText(String.format("%.02f", currentTipPct));
+			tipPctEditText.setText(String.format("%.2f", currentTipPct));
 			db.close();
 		}
 	};
@@ -189,7 +214,7 @@ public class TipCalculator extends Activity {
 		public void onClick(View v) {
 			db.open();
 			currentTaxPct = db.getDefaultTax();
-			taxPctEditText.setText(String.format("%.02f", currentTaxPct));
+			taxPctEditText.setText(String.format("%.3f", currentTaxPct));
 			db.close();
 		}
 	};
@@ -362,13 +387,6 @@ public class TipCalculator extends Activity {
     	totalAmt = currentPreTaxBill + tipAmt + taxAmt;
     	indTotalAmt = totalAmt / currentSplitBy;
     	
-    	tipAmtEditText.setText(String.format("%.02f", tipAmt));
-    	taxAmtEditText.setText(String.format("%.02f", taxAmt));
-    	totalAmtEditText.setText(String.format("%.02f", totalAmt));
-    	
-    	indBillEditText.setText(String.format("%.02f", indPreTaxAmt));
-    	indTipEditText.setText(String.format("%.02f", indTipAmt));
-    	indTaxEditText.setText(String.format("%.02f", indTaxAmt));
-    	indTotalEditText.setText(String.format("%.02f", indTotalAmt));
+    	setTextBoxes();
     }
 }
