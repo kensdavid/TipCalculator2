@@ -6,6 +6,7 @@ import com.kensdavid.randomquotes.DBAdapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.os.Bundle;
 import android.text.Editable;
@@ -51,6 +52,9 @@ public class TipCalculator extends Activity {
     private EditText indTotalEditText;
     //Capture "Split-By" functionality
     private TextView splitByNumTextView;
+    private TextView yourTotalTextView;
+    private TextView perPersonTextView;
+    
     private SeekBar splitBySeekBar;
     
     private Button hideKeyboardButton;
@@ -94,6 +98,9 @@ public class TipCalculator extends Activity {
         	currentTaxPct = savedInstanceState.getDouble(TAX_PCT);
         }
         
+        yourTotalTextView = (TextView)findViewById(R.id.yourTotalTextView);
+        perPersonTextView = (TextView)findViewById(R.id.perPersonTextView);
+        
          billEditText = (EditText)findViewById(R.id.billEditText);
          tipPctEditText = (EditText)findViewById(R.id.tipPctEditText);
          tipAmtEditText = (EditText)findViewById(R.id.tipAmtEditText);
@@ -125,6 +132,7 @@ public class TipCalculator extends Activity {
          
          splitBySeekBar = (SeekBar)findViewById(R.id.splitBySeekBar);
          splitBySeekBar.setOnSeekBarChangeListener(splitBySeekBarListener);
+         showPerPerson(false);
          
     }
     
@@ -170,7 +178,7 @@ public class TipCalculator extends Activity {
 			db.open();
 			//tipPctEditText.setText(Double.toString(db.getDefaultTip()), null);
 			currentTipPct = db.getDefaultTip();
-			tipPctEditText.setText(String.format("%.02f", tipAmt));
+			tipPctEditText.setText(String.format("%.02f", currentTipPct));
 			db.close();
 		}
 	};
@@ -180,8 +188,8 @@ public class TipCalculator extends Activity {
 		@Override
 		public void onClick(View v) {
 			db.open();
-			//taxPctEditText.setText(Double.toString(db.getDefaultTax()), null);
-			taxPctEditText.setText(String.format("0.02f", db.getDefaultTax()));
+			currentTaxPct = db.getDefaultTax();
+			taxPctEditText.setText(String.format("%.02f", currentTaxPct));
 			db.close();
 		}
 	};
@@ -198,43 +206,59 @@ public class TipCalculator extends Activity {
     	@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
+			String splitByText;
+			Resources res = getResources();
 			
-    		if(seekBar.getProgress() > 0)
+    		if(seekBar.getProgress() > 1)
 			{
 				currentSplitBy = seekBar.getProgress();
+				splitByText = Integer.toString(currentSplitBy);
+				showPerPerson(true);
 			}
 			else
 			{
 				currentSplitBy = 1;
+				splitByText = res.getString(R.string.defaultSplitBy); 
+				showPerPerson(false);
 			}
-			splitByNumTextView.setText(Integer.toString(currentSplitBy));
+			splitByNumTextView.setText(splitByText);
 			hideSoftKeyboard();
-			updateValues(null, null);						
+			updateValues(null, null);		
 		}
-    	
-    	
 
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
-			// TODO Auto-generated method stub
 			
 		}
 		
+		
+
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
-			// TODO Auto-generated method stub
 			
 		}
 	};
     
+	private void showPerPerson(boolean showPerPerson) {
+	    int visibility;
+	    if(showPerPerson)
+	    	visibility = EditText.VISIBLE;
+	    else
+	    	visibility = EditText.INVISIBLE;
+	    
+		indBillEditText.setVisibility(visibility);
+	    indTipEditText.setVisibility(visibility);
+	    indTaxEditText.setVisibility(visibility);
+	    indTotalEditText.setVisibility(visibility);
+	    yourTotalTextView.setVisibility(visibility);
+	    perPersonTextView.setVisibility(visibility);
+	}
 	
 	private TextWatcher billEditTextWatcher = new TextWatcher() {
 		
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			
-			
-			updateValues(s, "bill");
+			updateValues(s.toString(), "bill");
 		}
 		
 		@Override
@@ -252,7 +276,7 @@ public class TipCalculator extends Activity {
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
 					
-			updateValues(s, "tax");
+			updateValues(s.toString(), "tax");
 		}
 		
 		@Override
@@ -269,7 +293,7 @@ public class TipCalculator extends Activity {
 		
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {						
-			updateValues(s, "tip");
+			updateValues(s.toString(), "tip");
 		}
 		
 		@Override
@@ -290,6 +314,7 @@ public class TipCalculator extends Activity {
 			}
 			catch (Exception e) {
 				currentTaxPct = 8.875;
+				// taxPctEditText.setText(Double.toString(currentTaxPct));
 			}	
 		}
 		if(billString != null){
@@ -314,14 +339,17 @@ public class TipCalculator extends Activity {
 		
 	}
 
-    private void updateValues(CharSequence s, String typeString)
+    private void updateValues(String s, String typeString)
     {
-    	if(typeString.equals("tip"))
-    		recognizeValues(null, null, (String) s);
-    	if(typeString.equals("tax"))
-    		recognizeValues((String) s, null, null);
-    	if(typeString.equals("bill"))
-    		recognizeValues(null, (String) s, null);
+    	if(typeString != null){
+    		if(typeString.equals("tip"))
+        		recognizeValues(null, null, s);
+        	if(typeString.equals("tax"))
+        		recognizeValues(s, null, null);
+        	if(typeString.equals("bill"))
+        		recognizeValues(null, s, null);	
+    	}
+    	
     	
     	if(currentSplitBy == 0)
     		currentSplitBy = 1;

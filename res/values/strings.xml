@@ -15,7 +15,7 @@
     <string name="custom">Custom</string>
     <string name="eighteen">18%</string>
     <string name="splitways">Split By</string>
-    <string name="defaultSplitBy">1</string>
+    <string name="defaultSplitBy">No Split</string>
     <string name="upTip">+5%</string>
     <string name="downTip">-5%</string>
     <string name="pretaxamt">Pre-Tax $</string>
