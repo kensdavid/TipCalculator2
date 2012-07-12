@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, TipCalculator!</string>
+    <string name="app_name">Pre-Tax Tip Calculator</string>
+    <string name="bill">Bill Total</string>
+    <string name="billamt">100</string>
+    <string name="defaultamt">50.00</string>
+    <string name="ten">10%</string>
+    <string name="fifteen">15%</string>
+    <string name="twenty">20%</string>
+    <string name="space"></string>
+    <string name="tip">Tip %</string>
+    <string name="total">Total Bill</string>
+    <string name="custom">Custom</string>
+    <string name="eighteen">18%</string>
+    <string name="splitways">Split By</string>
+    <string name="defaultSplitBy">1</string>
+    <string name="upTip">+5%</string>
+    <string name="downTip">-5%</string>
+    <string name="pretaxamt">Pre-Tax $</string>
+    <string name="taxpct">Tax %</string>
+    <string name="defaultTax">8.875</string>
+    <string name="defaultTip">18.0</string>
+    <string name="yourtotal">Your Total</string>
+    <string name="tipamt">Tip $</string>
+    <string name="taxamt">Tax $</string>
+    <string name="yourpretax">Pre-Tax $</string>
+    <string name="defaultTipAmt">9.00</string>
+    <string name="defaultTaxAmt">4.38</string>
+    <string name="defaultTotalAmt">63.44</string>
+    <string name="individualdivider">Per Person</string>
+    <string name="overallbill">Total</string>
+    <string name="hide_kb">Hide Keyboard</string>
+    <string name="saveDefaults">Save Tip &amp; Tax</string>
+
+</resources>

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    android:padding="5dp"
+    android:stretchColumns="1,2,3" >
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/TableRow01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView05"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="5dp"
+                android:text="@string/yourtotal"
+                android:textColor="#F00" />
+
+            <EditText
+                android:id="@+id/indTotalEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight=".6"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:longClickable="false"
+                android:text="@string/defaultTotalAmt"
+                android:textColor="#F00"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/saveDefaultsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saveDefaults"
+                android:visibility="visible" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/totalAmtTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="5dp"
+                android:text="@string/total"
+                android:textColor="#000" />
+
+            <EditText
+                android:id="@+id/totalAmtEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight=".6"
+                android:cursorVisible="false"
+                android:ems="10"
+                android:focusable="false"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:longClickable="false"
+                android:text="@string/defaultTotalAmt"
+                android:textColor="#000"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/hideKeyboardButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:minWidth="0sp"
+                android:text="@string/hide_kb" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/splitByTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right|center_vertical"
+                android:paddingRight="5dp"
+                android:text="@string/splitways"
+                android:textColor="#000" />
+
+            <SeekBar
+                android:id="@+id/splitBySeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".8"
+                android:max="10"
+                android:paddingBottom="5dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:progress="1"
+                android:secondaryProgress="1" />
+
+            <TextView
+                android:id="@+id/splitByNumTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight=".1"
+                android:gravity="center_vertical|center"
+                android:paddingLeft="5dp"
+                android:text="@string/defaultSplitBy"
+                android:textColor="#000" />
+
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/TableRow04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView09"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="5dp"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/TextView08"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:paddingBottom="5dp"
+                android:text="@string/overallbill"
+                android:textColor="#000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/indDividerTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:paddingBottom="5dp"
+                android:text="@string/individualdivider"
+                android:textColor="#F00"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/billTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="5dp"
+                android:text="@string/pretaxamt"
+                android:textColor="#000" />
+
+            <EditText
+                android:id="@+id/billEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:text="@string/defaultamt"
+                android:textSize="14sp" >
+
+                <requestFocus />
+
+            </EditText>
+
+            <EditText
+                android:id="@+id/indBillEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:longClickable="false"
+                android:text="@string/defaultamt"
+                android:textColor="#F00"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="5dp"
+                android:text="@string/tip"
+                android:textColor="#000" />
+
+            <EditText
+                android:id="@+id/tipPctEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:layout_weight=".4"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:text="@string/defaultTip"
+                android:textSize="14sp" >
+            </EditText>
+
+            <Button
+                android:id="@+id/defaultTipButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Default" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:paddingRight="5dp"
+                android:text="@string/tipamt"
+                android:textColor="#000" />
+
+            <EditText
+                android:id="@+id/tipAmtEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:longClickable="false"
+                android:text="@string/defaultTipAmt"
+                android:textColor="#000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/indTipEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:longClickable="false"
+                android:text="@string/defaultTipAmt"
+                android:textColor="#F00"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/taxLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="5dp"
+                android:text="@string/taxpct"
+                android:textColor="#000" />
+
+            <EditText
+                android:id="@+id/taxPctEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:text="@string/defaultTax"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/defaultTaxButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Default" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/TableRow02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView06"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="5dp"
+                android:text="@string/taxamt"
+                android:textColor="#000" />
+
+            <EditText
+                android:id="@+id/taxAmtEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                
+                android:focusable="false"
+                android:layout_weight=".4"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:longClickable="false"
+                android:text="@string/defaultTaxAmt"
+                android:textColor="#000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/indTaxEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:longClickable="false"
+                android:text="@string/defaultTaxAmt"
+                android:textColor="#F00"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+    </TableLayout>
+
+</TableLayout>
