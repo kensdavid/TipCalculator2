@@ -338,7 +338,7 @@ public class TipCalculator extends Activity {
 				currentTaxPct = Double.parseDouble(taxString);
 			}
 			catch (Exception e) {
-				currentTaxPct = 8.875;
+				currentTaxPct = 0;
 				// taxPctEditText.setText(Double.toString(currentTaxPct));
 			}	
 		}
@@ -357,7 +357,7 @@ public class TipCalculator extends Activity {
 				currentTipPct = Double.parseDouble(tipString);
 			}
 			catch (Exception e) {
-				currentTipPct = 18.00;
+				currentTipPct = 0.00;
 			}
 		}
 		
