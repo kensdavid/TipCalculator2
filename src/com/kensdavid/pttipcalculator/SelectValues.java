@@ -37,7 +37,7 @@ public class SelectValues extends Activity {
 	
 	DBAdapter db;
 
-    /** Called when the activity is first created. */
+    /** Called when the activity is first created.*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); //call the superclass' version
