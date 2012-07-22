@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#FFF"
     android:padding="5dp"
-    android:stretchColumns="1,2,3" >
+    android:stretchColumns="1,2,3">
 
     <TableLayout
         android:layout_width="wrap_content"
@@ -41,14 +41,12 @@
                 android:textColor="#000"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
+
             <Button
-                android:id="@+id/hideKeyboardButton"
+                android:id="@+id/selectValuesButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:minWidth="0sp"
-                android:text="@string/hide_kb" />
+                android:text="&lt;- Back" android:gravity="center"/>
 
         </TableRow>
 
@@ -81,19 +79,61 @@
                 android:textColor="#F00"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
+
             <Button
-                android:id="@+id/saveDefaultsButton"
+                android:id="@+id/hideKeyboardButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/saveDefaults"
-                android:visibility="visible" />
+                android:minWidth="0sp"
+                android:text="@string/hide_kb"
+                android:visibility="invisible" />
+
         </TableRow>
     </TableLayout>
 
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/tableRow7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/splitByTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right|center_vertical"
+                android:paddingRight="5dp"
+                android:text="@string/splitways"
+                android:textColor="#000" />
+
+            <SeekBar
+                android:id="@+id/splitBySeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".8"
+                android:max="25"
+                android:paddingBottom="5dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:progress="1"
+                android:secondaryProgress="1" />
+
+            <TextView
+                android:id="@+id/splitByNumTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight=".1"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:text="@string/defaultSplitBy"
+                android:textColor="#000"
+                android:textStyle="bold" />
+
+        </TableRow>
 
         <TableRow
             android:id="@+id/tableRow9"
@@ -114,19 +154,34 @@
                 android:id="@+id/tipPctEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight=".4"
+                android:layout_weight=".5"
                 android:gravity="center"
                 android:inputType="numberDecimal"
                 android:text="@string/defaultTip"
-                android:textSize="14sp" />
+                android:textSize="14sp" >
 
+                <requestFocus />
+
+            </EditText>
+
             <Button
-                android:id="@+id/defaultTipButton"
-                android:layout_width="wrap_content"
+                android:id="@+id/minusTipButton"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Default" />
-        </TableRow>
+                android:layout_gravity="center"
+                android:layout_weight=".2"
+                android:text="-1" />
+
+            <Button
+                android:id="@+id/plusTipButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight=".2"
+                android:text="+1" />
 
+        </TableRow>
+
         <TableRow
             android:id="@+id/tableRow8"
             android:layout_width="wrap_content"
@@ -146,55 +201,25 @@
                 android:id="@+id/taxPctEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight=".4"
+                android:layout_weight=".5"
                 android:gravity="center"
                 android:inputType="numberDecimal"
                 android:text="@string/defaultTax"
                 android:textSize="14sp" />
 
             <Button
-                android:id="@+id/defaultTaxButton"
-                android:layout_width="wrap_content"
+                android:id="@+id/Button01"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Default" />
-        </TableRow>
+                android:layout_weight=".2"
+                android:text="-1" android:visibility="invisible"/>
 
-        <TableRow
-            android:id="@+id/tableRow7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/splitByTitleTextView"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/Button02"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="right|center_vertical"
-                android:paddingRight="5dp"
-                android:text="@string/splitways"
-                android:textColor="#000" />
-
-            <SeekBar
-                android:id="@+id/splitBySeekBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight=".8"
-                android:max="10"
-                android:paddingBottom="5dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:progress="1"
-                android:secondaryProgress="1" />
-
-            <TextView
-                android:id="@+id/splitByNumTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight=".1"
-                android:gravity="center_vertical|center"
-                android:paddingLeft="5dp"
-                android:text="@string/defaultSplitBy"
-                android:textColor="#000" />
+                android:layout_weight=".2"
+                android:text="+1" android:visibility="invisible"/>
         </TableRow>
 
         <TableRow
@@ -254,8 +279,6 @@
                 android:inputType="numberDecimal"
                 android:text="@string/defaultamt"
                 android:textSize="14sp" >
-
-                <requestFocus />
 
             </EditText>
 
@@ -375,5 +398,19 @@
 
         </TableRow>
     </TableLayout>
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/saveDefaultsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/saveDefaults"
+            android:visibility="invisible" />
+
+    </TableRow>
 
 </TableLayout>

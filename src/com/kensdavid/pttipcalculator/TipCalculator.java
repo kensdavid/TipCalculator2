@@ -2,17 +2,15 @@ package com.kensdavid.pttipcalculator;
 
  
 
-import java.text.NumberFormat;
-
-import com.kensdavid.randomquotes.DBAdapter;
-
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
-import android.media.MediaPlayer.OnBufferingUpdateListener;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +19,8 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+
+import com.kensdavid.randomquotes.DBAdapter;
 
 public class TipCalculator extends Activity {
 	private static final String BILL_TOTAL = "BILL_TOTAL";
@@ -31,7 +31,10 @@ public class TipCalculator extends Activity {
     private double currentPreTaxBill;
     private double currentTaxPct;
     private int currentSplitBy;
+    
     private double currentTipPct;
+    private String tipPctString;
+    
     private double indPreTaxAmt; 
     private double tipAmt;
     private double indTipAmt;
@@ -62,10 +65,12 @@ public class TipCalculator extends Activity {
     private Button hideKeyboardButton;
     private Button setDefaultsButton;
     private Button getDefaultTipButton;
-    private Button defaultTaxButton;
+    private Button minusTipButton;
+    private Button plusTipButton;
+    private Button selectValuesButton;
     
-    
-    
+    private Intent setValues;
+    private boolean created = false;
     
     DBAdapter db = new DBAdapter(this);
     
@@ -75,29 +80,41 @@ public class TipCalculator extends Activity {
         super.onCreate(savedInstanceState); //call the superclass' version
         setContentView(R.layout.main); //inflate the GUI
         
-        if(savedInstanceState == null)
-        {
-        	currentPreTaxBill = 50.00; //initialize pre tax bill to 50.00
-        	currentSplitBy = 1; //initialize split by qty to 1
-        	try{	
-        		//currentTaxPct = 8.875; //initialize tax to 8.875
-            	currentTaxPct = db.getDefaultTax();
-            	//currentTipPct = 18.0; //initialize custom % to 18
-            	currentTipPct = db.getDefaultTip();
-        	}
-        	catch(Exception e)
-        	{
-        		currentTaxPct = 8.875;
-        		currentTipPct = 18.00;
-        	}
-        	
-        }
+        currentSplitBy = 1; //initialize split by qty to 1
+        
+        if(getIntent().getExtras() != null)
+		{
+			Bundle extras = getIntent().getExtras();
+			currentPreTaxBill = extras.getDouble("PRE_TAX_AMT");
+			currentTaxPct = extras.getDouble("TAX_PCT");
+			currentTipPct = extras.getDouble("TIP_PCT");
+		}
         else
         {
-        	currentPreTaxBill = savedInstanceState.getDouble(BILL_TOTAL);
-        	currentSplitBy = savedInstanceState.getInt(SPLIT_BY);
-        	currentTipPct = savedInstanceState.getInt(TIP_PERCENT);
-        	currentTaxPct = savedInstanceState.getDouble(TAX_PCT);
+        	if(savedInstanceState == null)
+        	{
+            
+            	currentPreTaxBill = 50.00; //initialize pre tax bill to 50.00           	
+            	try{	
+            		db.open();
+            		currentTaxPct = db.getDefaultTax();
+                	currentTipPct = db.getDefaultTip();
+                	db.close();
+            	}
+            	catch(Exception e)
+            	{
+            		currentTaxPct = 8.875;
+            		currentTipPct = 18.00;
+            	}
+            }
+        
+	        else
+	        {
+	        	currentPreTaxBill = savedInstanceState.getDouble(BILL_TOTAL);
+	        	currentSplitBy = savedInstanceState.getInt(SPLIT_BY);
+	        	currentTipPct = savedInstanceState.getInt(TIP_PERCENT);
+	        	currentTaxPct = savedInstanceState.getDouble(TAX_PCT);
+	        }
         }
         
         yourTotalTextView = (TextView)findViewById(R.id.yourTotalTextView);
@@ -109,6 +126,7 @@ public class TipCalculator extends Activity {
          taxPctEditText = (EditText)findViewById(R.id.taxPctEditText);
          taxAmtEditText = (EditText)findViewById(R.id.taxAmtEditText);
          totalAmtEditText = (EditText)findViewById(R.id.totalAmtEditText);
+         totalAmtEditText.setOnClickListener(selectValuesListener);
          indBillEditText = (EditText)findViewById(R.id.indBillEditText);
          indTipEditText = (EditText)findViewById(R.id.indTipEditText);
          indTaxEditText = (EditText)findViewById(R.id.indTaxEditText);
@@ -120,11 +138,17 @@ public class TipCalculator extends Activity {
          setDefaultsButton = (Button)findViewById(R.id.saveDefaultsButton);
          setDefaultsButton.setOnClickListener(setDefaultsListener);
          
-         defaultTaxButton = (Button)findViewById(R.id.defaultTaxButton);
-         defaultTaxButton.setOnClickListener(loadTaxDefaultListener);
+         minusTipButton = (Button)findViewById(R.id.minusTipButton);
+         minusTipButton.setOnClickListener(changeTipListener);
          
-         getDefaultTipButton = (Button)findViewById(R.id.defaultTipButton);
-         getDefaultTipButton.setOnClickListener(loadTipDefaultListener);
+         plusTipButton = (Button)findViewById(R.id.plusTipButton);
+         plusTipButton.setOnClickListener(changeTipListener);
+         
+         //getDefaultTipButton = (Button)findViewById(R.id.defaultTipButton);
+         //getDefaultTipButton.setOnClickListener(loadTipDefaultListener);
+         
+         selectValuesButton = (Button)findViewById(R.id.selectValuesButton);
+         selectValuesButton.setOnClickListener(selectValuesListener);
          
          splitByNumTextView = (TextView)findViewById(R.id.splitByNumTextView);
          
@@ -134,12 +158,12 @@ public class TipCalculator extends Activity {
          
          splitBySeekBar = (SeekBar)findViewById(R.id.splitBySeekBar);
          splitBySeekBar.setOnSeekBarChangeListener(splitBySeekBarListener);
-         showPerPerson(false);
-         billEditText.setText(Double.toString(currentPreTaxBill));
-         tipPctEditText.setText(Double.toString(currentTipPct));
-         taxPctEditText.setText(Double.toString(currentTaxPct));
          
          splitBySeekBar.setProgress(currentSplitBy);
+         billEditText.setText(String.format("%.02f", currentPreTaxBill));
+         tipPctEditText.setText(Double.toString(currentTipPct));
+         taxPctEditText.setText(Double.toString(currentTaxPct));
+         showPerPerson(false);
          setTextBoxes();
     }
     
@@ -150,8 +174,6 @@ public class TipCalculator extends Activity {
     }
     
     private void setTextBoxes() {
-    	//tipAmtEditText.setText(String.format("%.2f", tipAmt));
-    	//taxAmtEditText.setText(String.format("%.3f", taxAmt));
     	tipAmtEditText.setText(String.format("%.2f", tipAmt));
     	taxAmtEditText.setText(String.format("%.2f", taxAmt));
     	totalAmtEditText.setText(String.format("%.2f", totalAmt));
@@ -161,7 +183,17 @@ public class TipCalculator extends Activity {
     	indTotalEditText.setText(String.format("%.2f", indTotalAmt));
 	}
 
-
+    private void setButtonText() {
+    	selectValuesButton.setText("<- Back");
+    	selectValuesButton.setGravity(Gravity.CENTER);
+    	hideKeyboardButton.setText("Hide Keyboard");
+    	hideKeyboardButton.setGravity(Gravity.CENTER);
+    	minusTipButton.setText("-1");
+    	minusTipButton.setGravity(Gravity.CENTER);
+    	plusTipButton.setText("+1");
+    	plusTipButton.setGravity(Gravity.CENTER);
+    	splitByNumTextView.setGravity(Gravity.CENTER);
+    }
 
 	//Save all values
     @Override
@@ -180,6 +212,8 @@ public class TipCalculator extends Activity {
 		@Override
 		public void onClick(View v) {
 			hideSoftKeyboard();
+			//Reset the button text to account for the Gravity bug
+			setButtonText();
 		}
 	};
 	
@@ -193,9 +227,23 @@ public class TipCalculator extends Activity {
 			db.updateTip(tipPct);
 			db.updateTax(taxPct);
 			db.close();
+			//Reset the button text to account for the Gravity bug
+			setButtonText();
 		}
 	};
 	
+	private OnClickListener selectValuesListener = new android.view.View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			 setValues = new Intent(TipCalculator.this, SelectValues.class);
+			 setValues.putExtra("PRE_TAX_AMT", currentPreTaxBill);
+			 setValues.putExtra("TAX_PCT", currentTaxPct);
+			 setValues.putExtra("TIP_PCT", currentTipPct);
+			 startActivity(setValues);
+			 finish();
+		}
+	};
 	private OnClickListener loadTipDefaultListener = new android.view.View.OnClickListener() {
 		
 		@Override
@@ -205,10 +253,12 @@ public class TipCalculator extends Activity {
 			currentTipPct = db.getDefaultTip();
 			tipPctEditText.setText(String.format("%.2f", currentTipPct));
 			db.close();
+			//Reset the button text to account for the Gravity bug
+			setButtonText();
 		}
 	};
 	
-	private OnClickListener loadTaxDefaultListener = new android.view.View.OnClickListener() {
+	/*private OnClickListener loadTaxDefaultListener = new android.view.View.OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
@@ -216,6 +266,22 @@ public class TipCalculator extends Activity {
 			currentTaxPct = db.getDefaultTax();
 			taxPctEditText.setText(String.format("%.3f", currentTaxPct));
 			db.close();
+		}
+	};*/
+	
+	private OnClickListener changeTipListener = new android.view.View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			if(v == plusTipButton)
+				currentTipPct++;
+			if(v == minusTipButton && currentTipPct >= 1.0)
+				currentTipPct--;
+			tipPctString = Double.toString(currentTipPct);
+			tipPctEditText.setText(tipPctString);
+			updateValues(tipPctString, "tip");
+			//Reset the button text to account for the Gravity bug
+			setButtonText();
 		}
 	};
 	
@@ -238,12 +304,14 @@ public class TipCalculator extends Activity {
 			{
 				currentSplitBy = seekBar.getProgress();
 				splitByText = Integer.toString(currentSplitBy);
+				splitByNumTextView.setTextColor(Color.RED);				
 				showPerPerson(true);
 			}
 			else
 			{
 				currentSplitBy = 1;
 				splitByText = res.getString(R.string.defaultSplitBy); 
+				splitByNumTextView.setTextColor(Color.BLACK);
 				showPerPerson(false);
 			}
 			splitByNumTextView.setText(splitByText);

@@ -1,8 +1,6 @@
 package com.kensdavid.randomquotes;
 
 
-import java.util.Random;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -16,18 +14,19 @@ public class DBAdapter {
 	public static final String KEY_ROWID="_id";
 	public static final String KEY_TIP = "defaultTip";
 	public static final String KEY_TAX = "defaultTax";
+	public static final String KEY_BILL = "defaultBill";
 	private static final String TAG = "DBAdapter";
 	
 	private static final String DATABASE_NAME = "Random";
 	private static final String DATABASE_TABLE = "tblTipCalc";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	
 	//private static final String DATABASE_CREATE = "create table if not exists tblTipCalc (_id integer primary key autoincrement, "
 	//		+ "Quote text not null );";
 	
 	//By default, set default tip = 18.0 and default tax = 8.875
 	private static final String DATABASE_CREATE = "create table if not exists tblTipCalc (_id integer primary key autoincrement, "
-			+ "defaultTip REAL, defaultTax REAL );";
+			+ "defaultTip REAL, defaultTax REAL, defaultBill REAL);";
 	
 	private final Context context;
 	
@@ -53,6 +52,7 @@ public class DBAdapter {
 			ContentValues values = new ContentValues();
 			values.put(KEY_TAX, 8.875);
 			values.put(KEY_TIP, 18.0);
+			values.put(KEY_BILL, 59.99);
 			db.execSQL(DATABASE_CREATE);
 			db.insert(DATABASE_TABLE, null, values);
 		}
@@ -103,6 +103,14 @@ public class DBAdapter {
 		return db.update(DATABASE_TABLE, values, "_id=1", null);
 	}
 	
+	//Update the defaultBill value
+	public long updateBill(Double billAmt)
+	{
+		ContentValues values = new ContentValues();
+		values.put(KEY_BILL, billAmt);		
+		return db.update(DATABASE_TABLE, values, "_id=1", null);
+	}
+	
 	public double getDefaultTip()
 	{
 		Cursor cursor = db.rawQuery("SELECT defaultTip FROM tblTipCalc where _id = 1", null);
@@ -117,6 +125,17 @@ public class DBAdapter {
 	public double getDefaultTax()
 	{
 		Cursor cursor = db.rawQuery("SELECT defaultTax FROM tblTipCalc where _id = 1", null);
+		
+		if(cursor.moveToFirst())
+		{
+			return cursor.getDouble(0);
+		}
+		return cursor.getDouble(0);
+	}
+	
+	public double getDefaultBill()
+	{
+		Cursor cursor = db.rawQuery("SELECT defaultBill FROM tblTipCalc where _id = 1", null);
 		
 		if(cursor.moveToFirst())
 		{
